@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block quiz %}
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+            <div class="w-50 container align-items-center justify-content-center">
+                <div align="center">
+                    <p class="tekstas">Kokia žodžio <span class="emphasized">„{{ zodis }}“</span> reikšmė?</p>
+                    <p class="tekstas-mini">Taškai: {{ score }}</p>
+                    <p class="tekstas-mini">Bandymai: {{ guesses }}/{{ attempts }}</p>
+                    <div class="list-group">
+                        <form method="POST" id="quiz">
+                            <input type="button" name="option" class="button-30 list-group-item list-group-item-action" value="{{ reiksmes[0] }}"></input>
+                            <input type="button" name="option" class="button-30 list-group-item list-group-item-action" value="{{ reiksmes[1] }}"></input>
+                            <input type="button" name="option" class="button-30 list-group-item list-group-item-action" value="{{ reiksmes[2] }}"></input>
+                            <input type="button" name="option" class="button-30 list-group-item list-group-item-action" value="{{ reiksmes[3] }}"></input>
+                            <input type="hidden" name="choice" id="choice"></input>
+                        </form>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+
+<script>
+    const buttons = document.getElementsByName("option")
+    let clicked = false
+
+    for(const button of buttons) {
+        button.addEventListener("click", ()=>{
+            if(!clicked) {
+                if("{{reiksmes[teisingas_atsakymas]}}" == button.value) {
+                    // alert("Teisingas atsakymas!")
+                    clicked = true
+                    setTimeout(() => document.getElementById("quiz").submit(), 1000);
+                    button.style.background='#73d373'
+                    document.getElementById("choice").value = button.value
+                } else {
+                    // alert("Neteisingas atsakymas!")
+                    clicked = true
+                    setTimeout(() => document.getElementById("quiz").submit(), 1000);
+                    button.style.background='#fb6962'
+                    buttons["{{teisingas_atsakymas}}"].style.background='#73d373'
+                    document.getElementById("choice").value = button.value
+                }
+            }
+        })
+    }   
+</script>
+{% endblock %}
